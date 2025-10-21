@@ -1,0 +1,2 @@
+To get the population density data，please download from the figshare and put it under this folder:
+https://figshare.com/articles/dataset/Geographical_Convergent_Cross_Mapping_GCCM_model/27939501?file=50910918
