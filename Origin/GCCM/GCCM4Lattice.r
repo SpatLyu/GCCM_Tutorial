@@ -125,7 +125,7 @@ generateEmbedings<- function (neighborMatrix,x,E)
 }
 
 
-GCCMLattice <- function(x_vectors, y, lib_sizes, lib, pred, E, tau = 1, b = E+1,cores=NULL)
+GCCMLattice <- function(x_vectors, y, lib_sizes, lib, pred, E, tau = 1, b = E+2,cores=NULL)
 {
   # do convergent cross mapping using simplex projection
   # x           = time series to cross map from
@@ -133,9 +133,11 @@ GCCMLattice <- function(x_vectors, y, lib_sizes, lib, pred, E, tau = 1, b = E+1,
   # lib_sizes   = vector of library sizes to use
   # lib         = matrix (n x 2) using n sequences of data to construct libraries
   # pred        = matrix (n x 2) using n sequences of data to predict from
-  # E           = number of dimensions for the attractor reconstruction
+  # E           = number of spatial lags for the attractor reconstruction
   # tau         = time lag for the lagged-vector construction
-  # b           = number of nearest neighbors to use for prediction
+  # b           = number of nearest neighbors to use for prediction. We set it default to E+2 according to 
+  #               suggestions from Katharina M Bracher，Stuart King and Ian Maccormick of University of Edinburgh, Edinburgh.
+  #               Here we acknowledge their contributions 
   
   n <- NROW(x_vectors)
   pred <- matrix(pred, ncol = 2, byrow = TRUE)

@@ -1,17 +1,24 @@
-load("./Origin/NPP/npp.RData") 
+load("./data/npp.RData") 
 
-c(climateImages,list(nppImage)) -> a
 pre = terra::rast(climateImages[[1]])
 tem = terra::rast(climateImages[[2]])
-npp2 = terra::rast(nppImage)
+npp = terra::rast(nppImage)
+npp = c(pre,tem,npp)
+names(npp) = c("pre","tem","npp")
 
-npp_gccm = c(pre,tem,npp2)
-names(npp_gccm) = c("pre","tem","npp")
-terra::writeRaster(npp_gccm,"./npp.tif")
-terra::ext(npp_gccm) = c(-0.5,552.5,-0.5,484.5)
-
-terra::trans(npp_gccm) |> 
+terra::trans(npp) |> 
   terra::plot()
 
+g1 = spEDM::gccm(npp, "pre", "npp", E = 4, k = 6, style = 0, stack = 1,
+                 libsize = matrix(rep(300,2), ncol = 2),
+                 pred = as.matrix(expand.grid(seq(10,480,10),seq(10,550,10))),
+                 dist.metric = "L1", dist.average = F, detrend = T)
+g1
+g1$xmap
 
-a = terra::as.data.frame(npp_gccm,xy = TRUE,na.rm = T)
+g2 = spEDM::gccm(npp, "tem", "npp", E = 4, k = 6, style = 0, stack = 1,
+                 libsize = matrix(rep(300,2), ncol = 2),
+                 pred = as.matrix(expand.grid(seq(10,480,10),seq(10,550,10))),
+                 dist.metric = "L1", dist.average = F, detrend = T)
+g2
+g2$xmap

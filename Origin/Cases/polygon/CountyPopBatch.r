@@ -1,4 +1,4 @@
-setwd("E:\\Study\\R\\spatial-causality\\codes&data\\polygon")
+setwd("E:\\spatial-causality\\GCCM_updated\\R\\Cases\\polygon")
 
 
 library(parallel)
@@ -7,8 +7,8 @@ library(doParallel)
 
 #library("spdep")  #  read shape file data 
 
-source("GCCM4Lattice.r")
-source("basic.r")
+source("..\\..\\GCCM\\GCCM4Lattice.r")
+source("..\\..\\GCCM\\basic.r")
 
 
 load("popShp.RData")   #load data, If the data was not store previousely, the following codes could be used to read data from shape file
@@ -60,21 +60,16 @@ for(xName in xNames)
   prediction<-predict(lmModel2,coords)
   x<-x-prediction
   
-  #lmModel<-lm(y ~ x)
-  
-  #prediction<-predict(lmModel)
-  
-  #y<-y-prediction
   
   startTime<-Sys.time()
   
   
   embedings<-generateEmbedings(neighborMatrix,x,E)                       #generate the  embedings of cause variable  
-  x_xmap_y <- GCCMLattice(embedings, y, lib_sizes, lib, pred, E,cores=8) #predict y based on x  
+  x_xmap_y <- GCCMLattice(embedings, y, lib_sizes, lib, pred, E,b=E+1, cores=8) #predict y based on x  
   
    
   embedings<-generateEmbedings(neighborMatrix,y,E)                        #generate the  embedings of effect variable  
-  y_xmap_x <- GCCMLattice(embedings, x, lib_sizes, lib, pred, E,cores=8)  #predict x based on y  
+  y_xmap_x <- GCCMLattice(embedings, x, lib_sizes, lib, pred, E, b=E+1, cores=8)  #predict x based on y  
   
   
   endTime<-Sys.time()
@@ -107,14 +102,14 @@ for(xName in xNames)
   
   results<-data.frame(lib_sizes,x_xmap_y_means,y_xmap_x_means)
   
-  write.csv(results,file=paste("results/Pop/",xName,"_",yName,"LatLon.csv",sep=""))   #Save the final results of cross-mapping predcition
+  write.csv(results,file=paste("results/",xName,"_",yName,".csv",sep=""))   #Save the final results of cross-mapping predcition
   
   par(mfrow=c(1,1))
   par(mar=c(5, 4, 4, 2) + 0.1)
   
   
   
-  jpeg(filename = paste("results/Pop/",xName,"_",yName,"LatLon.jpg",sep = ""),width = 600, height = 400)   #plot the final results of cross-mapping predcition
+  jpeg(filename = paste("results/",xName,"_",yName,".jpg",sep = ""),width = 600, height = 400)   #plot the final results of cross-mapping predcition
   
   plot(lib_sizes, x_xmap_y_means, type = "l", col = "royalblue", lwd = 2, 
        xlim = c(min(lib_sizes), max(lib_sizes)), ylim = c(0.0, 1), xlab = "L", ylab = expression(rho))

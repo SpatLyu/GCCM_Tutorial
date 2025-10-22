@@ -61,89 +61,113 @@ laggedVariable<-function(dataMatrix,lagNum)
 {
   ColNum<-ncol(dataMatrix)
   RowNum<-nrow(dataMatrix)
-  dataMatrix<-expandMatrix(dataMatrix,lagNum)
+  exDataMatrix<-expandMatrix(dataMatrix,lagNum)
   
-  laggedVar<-array(rep(NA,ColNum*RowNum*8*lagNum),dim=c(RowNum,ColNum,8*lagNum))
+  laggedVar<-array(rep(NA,ColNum*RowNum*8*lagNum),dim=c(RowNum*ColNum,8*lagNum))
   
   for(r in 1:RowNum)
   {
     for(c in 1:ColNum)
     {
       item<-1
-      colsAdd<-seq(-trunc((3+(lagNum-1)*2)/2),trunc((3+(lagNum-1)*2)/2))
-      
-      for(la in colsAdd)
+      exr<-r+lagNum
+      exc<-c+lagNum
+      #############Start from Notheast, fisr North################
+      for(la in seq(lagNum,(1-lagNum)))
       {
-        laggedVar[r,c,item]<- dataMatrix[r-lagNum+lagNum,c+la+lagNum]
+        #####Row is  row-lagNum
+        laggedVar[r,c,item]<- exDataMatrix[exr-lagNum,exc+la]
         item<-item+1
       }
       
-      rowsAdd<-seq(-(lagNum-1),(lagNum-1))
-      
-      for(ra in rowsAdd)
+      #############Then West################
+      for(ra in seq(-lagNum,(lagNum-1)))
       {
-        laggedVar[r,c,item]<- dataMatrix[r+ra+lagNum,c-lagNum+lagNum]
-        item<-item+1
-        
-        laggedVar[r,c,item]<- dataMatrix[r+ra+lagNum,c+lagNum+lagNum]
+        #####Row is  row-lagNum
+        laggedVar[r,c,item]<- exDataMatrix[exr+ra,exc-lagNum]
         item<-item+1
       }
       
-      for(la in colsAdd)
+      #############Then South################
+      
+      for(la in seq(-lagNum,(lagNum-1)))
       {
-        laggedVar[r,c,item]<- dataMatrix[r+lagNum+lagNum,c+la+lagNum]
+        #####Row is  row-lagNum
+        laggedVar[r,c,item]<- exDataMatrix[exr+lagNum,exc+la]
         item<-item+1
       }
+      
+      
+      #############Then East################
+      for(ra in seq(lagNum,(1-lagNum)))
+      {
+        #####Row is  row-lagNum
+        laggedVar[r,c,item]<- exDataMatrix[exr+ra,exc+lagNum]
+        item<-item+1
+      }
+      
     }
   }
   return (laggedVar)
 }
-
 
 
 laggedVariableAs2Dim<-function(dataMatrix,lagNum)  
 {
   ColNum<-ncol(dataMatrix)
   RowNum<-nrow(dataMatrix)
-  dataMatrix<-expandMatrix(dataMatrix,lagNum)
+  exDataMatrix<-expandMatrix(dataMatrix,lagNum)
   
   laggedVar<-array(rep(NA,ColNum*RowNum*8*lagNum),dim=c(RowNum*ColNum,8*lagNum))
   
   ###By row; from top to down
-  
   for(r in 1:RowNum)
   {
     for(c in 1:ColNum)
     {
       item<-1
-      colsAdd<-seq(-trunc((3+(lagNum-1)*2)/2),trunc((3+(lagNum-1)*2)/2))
-      
-      for(la in colsAdd)
+      exr<-r+lagNum
+      exc<-c+lagNum
+      #############Start from Notheast, fisr North################
+      for(la in seq(lagNum,(1-lagNum)))
       {
-        laggedVar[(r-1)*ColNum+c,item]<- dataMatrix[r-lagNum+lagNum,c+la+lagNum]
+        #####Row is  row-lagNum
+        laggedVar[(r-1)*ColNum+c,item]<- exDataMatrix[exr-lagNum,exc+la]
         item<-item+1
       }
       
-      rowsAdd<-seq(-(lagNum-1),(lagNum-1))
-      
-      for(ra in rowsAdd)
+      #############Then West################
+      for(ra in seq(-lagNum,(lagNum-1)))
       {
-        laggedVar[(r-1)*ColNum+c,item]<- dataMatrix[r+ra+lagNum,c-lagNum+lagNum]
-        item<-item+1
-        
-        laggedVar[(r-1)*ColNum+c,item]<- dataMatrix[r+ra+lagNum,c+lagNum+lagNum]
+        #####Row is  row-lagNum
+        laggedVar[(r-1)*ColNum+c,item]<- exDataMatrix[exr+ra,exc-lagNum]
         item<-item+1
       }
       
-      for(la in colsAdd)
+      #############Then South################
+      
+      for(la in seq(-lagNum,(lagNum-1)))
       {
-        laggedVar[(r-1)*ColNum+c,item]<- dataMatrix[r+lagNum+lagNum,c+la+lagNum]
+        #####Row is  row-lagNum
+        laggedVar[(r-1)*ColNum+c,item]<- exDataMatrix[exr+lagNum,exc+la]
         item<-item+1
       }
+      
+      
+      #############Then East################
+      for(ra in seq(lagNum,(1-lagNum)))
+      {
+        #####Row is  row-lagNum
+        laggedVar[(r-1)*ColNum+c,item]<- exDataMatrix[exr+ra,exc+lagNum]
+        item<-item+1
+      }
+      
     }
   }
   return (laggedVar)
 }
+
+
 
 distance<-function(emd1,emd2)
 {

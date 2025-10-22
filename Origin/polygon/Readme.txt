@@ -1,1 +1,0 @@
-In the county map, we deleted the counties without first-order and second-order neigbors. 

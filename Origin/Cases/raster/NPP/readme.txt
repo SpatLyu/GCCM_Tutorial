@@ -1,0 +1,1 @@
+When cores is set to 32, the running time between NPP and the PREC is approximately 36 minutes.

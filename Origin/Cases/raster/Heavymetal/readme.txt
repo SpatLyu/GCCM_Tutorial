@@ -1,0 +1,1 @@
+When cores is set to 16, the running time between Cu and the environment variable night light is approximately 133 minutes.
