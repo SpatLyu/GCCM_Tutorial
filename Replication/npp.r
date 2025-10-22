@@ -1,3 +1,5 @@
+load("./Origin/NPP/npp.RData") 
+
 c(climateImages,list(nppImage)) -> a
 pre = terra::rast(climateImages[[1]])
 tem = terra::rast(climateImages[[2]])
