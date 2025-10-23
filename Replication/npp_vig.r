@@ -16,5 +16,7 @@ indices = sample(nrow(nnaindice), size = 1500, replace = FALSE)
 libindice = nnaindice[-indices,]
 predindice = nnaindice[indices,]
 
-s1 = simplex(npp, "pre", "pre", E = 2:10, k = 8, stack = TRUE, lib = nnaindice, pred = predindice)
-s2 = simplex(npp, "npp", "npp", E = 2:10, k = 8, stack = TRUE, lib = nnaindice, pred = predindice)
+s1 = simplex(npp, "pre", "pre", E = 2:5, k = 3:8, style = 0, tau = 1, stack = TRUE, 
+             lib = nnaindice, pred = predindice, dist.metric = "L1", dist.average = FALSE)
+s2 = simplex(npp, "npp", "npp", E = 2:10, k = 3:8, style = 0, tau = 1, stack = TRUE, 
+             lib = nnaindice, pred = predindice, dist.metric = "L1", dist.average = FALSE)
