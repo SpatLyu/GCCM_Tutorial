@@ -9,6 +9,8 @@ names(npp) = c("pre","tem","npp")
 terra::trans(npp) |> 
   terra::plot()
 
+# terra::writeRaster(npp,'./data/npp.tif',overwrite = TRUE)
+
 g1 = spEDM::gccm(npp, "pre", "npp", E = 3, k = 5, style = 0, stack = T,
                  libsizes = matrix(rep(seq(20,550,40),2), ncol = 2),
                  pred = as.matrix(expand.grid(seq(10,480,10),seq(10,550,10))),

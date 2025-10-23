@@ -11,14 +11,16 @@ names(Envs) = c("ntl","industry")
 heavymetal = c(HMs,Envs)
 terra::plot(heavymetal)
 
+# terra::writeRaster(heavymetal,'./data/heavymetal.tif',overwrite = TRUE)
+
 g1 = spEDM::gccm(heavymetal, "ntl", "cu",
-                 libsizes = matrix(rep(120,time = 2),ncol = 2),
-                 E = 4, k = 5, style = 0, stack = 1,
+                 libsizes = matrix(rep(seq(10,120,20),time = 2),ncol = 2),
+                 E = 4, k = 5, style = 0, stack = TRUE,
                  pred = as.matrix(expand.grid(seq(5,125,5), seq(5,130,5))),
                  dist.metric = "L1", dist.average = FALSE, detrend = FALSE)
 
 g2 = spEDM::gccm(heavymetal, "industry", "cu",
-                 libsizes = matrix(rep(120,time = 2),ncol = 2),
-                 E = 4, k = 5, style = 0, stack = 1,
+                 libsizes = matrix(rep(seq(10,120,20),time = 2),ncol = 2),
+                 E = 4, k = 5, style = 0, stack = TRUE,
                  pred = as.matrix(expand.grid(seq(5,125,5), seq(5,130,5))),
                  dist.metric = "L1", dist.average = FALSE, detrend = FALSE)
