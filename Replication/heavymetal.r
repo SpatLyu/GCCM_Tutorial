@@ -11,7 +11,8 @@ names(Envs) = c("ntl","industry")
 heavymetal = c(HMs,Envs)
 terra::plot(heavymetal)
 
-# terra::writeRaster(heavymetal,'./data/heavymetal.tif',overwrite = TRUE)
+# terra::writeRaster(heavymetal,'./data/heavymetal.tif', datatype = "FLT8S", overwrite = TRUE)
+heavymetal = terra::rast('./data/heavymetal.tif')
 
 g1 = spEDM::gccm(heavymetal, "ntl", "cu",
                  libsizes = matrix(rep(seq(10,120,20),time = 2),ncol = 2),
