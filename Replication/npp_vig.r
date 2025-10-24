@@ -1,6 +1,7 @@
 library(spEDM)
 
 npp = terra::rast(system.file("case/npp.tif", package = "spEDM"))
+npp = terra::aggregate(npp, fact = 3, na.rm = TRUE)
 npp
 
 # Inspect NA values
@@ -30,8 +31,8 @@ startTime = Sys.time()
 npp_res = gccm(data = npp,
                cause = "pre",
                effect = "npp",
-               libsizes = matrix(rep(seq(20,400,40),2),ncol = 2),
-               E = 4,
+               libsizes = matrix(rep(seq(10,130,20),2),ncol = 2),
+               E = 2,
                k = 8,
                style = 1,
                tau = 1,
@@ -40,8 +41,9 @@ npp_res = gccm(data = npp,
                pred = predindice,
                dist.metric = "L1", 
                dist.average = FALSE,
-               win.ratio = 0.2,
-               progressbar = FALSE)
+               #win.ratio = 0.1,
+               progressbar = FALSE,
+               grid.coord = FALSE)
 endTime = Sys.time()
 print(difftime(endTime,startTime, units ="mins"))
 npp_res
