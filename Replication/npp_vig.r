@@ -16,14 +16,24 @@ indices = sample(nrow(nnaindice), size = 1500, replace = FALSE)
 libindice = nnaindice[-indices,]
 predindice = nnaindice[indices,]
 
+s1 = simplex(npp, "pre", "pre", E = 2:5, k = 3:8, style = 1, tau = 1, stack = TRUE, 
+             lib = nnaindice, pred = predindice, dist.metric = "L1", dist.average = FALSE)
+s1$xmap
+s1
+
+s2 = simplex(npp, "npp", "npp", E = 2:5, k = 3:8, style = 1, tau = 1, stack = TRUE, 
+             lib = nnaindice, pred = predindice, dist.metric = "L1", dist.average = FALSE)
+s2$xmap
+s2
+
 startTime = Sys.time()
 npp_res = gccm(data = npp,
                cause = "pre",
                effect = "npp",
                libsizes = matrix(rep(seq(20,400,40),2),ncol = 2),
-               E = 3,
+               E = 4,
                k = 8,
-               style = 0,
+               style = 1,
                tau = 1,
                stack = TRUE,
                lib = nnaindice,
@@ -38,13 +48,3 @@ npp_res
 npp_res$xmap
 readr::write_rds(npp_res,'./npp_res.rds')
 plot(npp_res)
-
-s1 = simplex(npp, "pre", "pre", E = 3:5, k = 4:8, style = 0, tau = 1, stack = TRUE, 
-             lib = nnaindice, pred = predindice, dist.metric = "L1", dist.average = FALSE)
-s1$xmap
-s1
-
-s2 = simplex(npp, "npp", "npp", E = 3:5, k = 4:8, style = 0, tau = 1, stack = TRUE, 
-             lib = nnaindice, pred = predindice, dist.metric = "L1", dist.average = FALSE)
-s2$xmap
-s2
